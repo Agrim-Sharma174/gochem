@@ -374,6 +374,12 @@ const ChemicalsDetails = () => {
     });
   };
 
+  const handleSearchInputChange = (e) => {
+    const text = e.target.value;
+    setSearchInput(text);
+    handleSearch(text);
+  };
+
   return (
     <div className="our-services bg-green-200">
       <div className="py-2 px-3">
@@ -386,7 +392,7 @@ const ChemicalsDetails = () => {
         <input
           className="search-box focus:outline-none w-[400px] h-10 text-slate-600 p-2"
           type="text"
-          onChange={handleInputChange}
+          onChange={handleSearchInputChange}
           value={searchInput}
           placeholder="Search for Institution, Chemicals..."
         />
