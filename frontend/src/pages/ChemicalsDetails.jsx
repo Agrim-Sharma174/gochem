@@ -260,22 +260,87 @@ const ChemicalsDetails = () => {
   ]
   );
 
+  // const [searchInput, setSearchInput] = useState("");
+  // const [filteredData, setFilteredData] = useState([]);
+
+  // // Function to handle adding a new chemical
+  // const addChemical = () => {
+  //   // Create a new chemical object and add it to the state
+  //   const newChemical = {
+  //     instituion_name: "New Chemical Institution",
+  //     city: "New City",
+  //     chemical_1: "Chemical A",
+  //     chemical_2: "Chemical B",
+  //     chemical_3: "Chemical C",
+  //     rating: 4.5,
+  //   };
+
+  //   setServicesData([...servicesData, newChemical]);
+  // };
+
+  // useEffect(() => {
+  //   setFilteredData(servicesData);
+  // }, [servicesData]);
+
+  // const handleSearch = (searchText) => {
+  //   const filtered = servicesData.filter((service) => {
+  //     const name = service.instituion_name.toLowerCase();
+  //     const city = service.city.toLowerCase();
+  //     const chemical_1 = service.chemical_1.toLowerCase();
+  //     const chemical_2 = service.chemical_2.toLowerCase();
+  //     const chemical_3 = service.chemical_3.toLowerCase();
+  //     const search = searchText.toLowerCase();
+  //     return (
+  //       name.includes(search) ||
+  //       city.includes(search) ||
+  //       chemical_1.includes(search) ||
+  //       chemical_2.includes(search) ||
+  //       chemical_3.includes(search)
+  //     );
+  //   });
+  //   setFilteredData(filtered);
+  // };
+
+  // const handleInputChange = (e) => {
+  //   const text = e.target.value;
+  //   setSearchInput(text);
+  //   handleSearch(text);
+  // };
+
   const [searchInput, setSearchInput] = useState("");
   const [filteredData, setFilteredData] = useState([]);
+  const [showAddForm, setShowAddForm] = useState(false); // State to control the form visibility
 
-  // Function to handle adding a new chemical
+  const [newChemical, setNewChemical] = useState({
+    // State to store input for the new chemical
+    instituion_name: "",
+    city: "",
+    chemical_1: "",
+    chemical_2: "",
+    chemical_3: "",
+    rating: 0,
+  });
+
   const addChemical = () => {
-    // Create a new chemical object and add it to the state
-    const newChemical = {
-      instituion_name: "New Chemical Institution",
-      city: "New City",
-      chemical_1: "Chemical A",
-      chemical_2: "Chemical B",
-      chemical_3: "Chemical C",
-      rating: 4.5,
-    };
+    setShowAddForm(true);
+  };
 
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+
+    // Create a new chemical object with user input and add it to the state
     setServicesData([...servicesData, newChemical]);
+
+    // Reset the form and hide it
+    setNewChemical({
+      instituion_name: "",
+      city: "",
+      chemical_1: "",
+      chemical_2: "",
+      chemical_3: "",
+      rating: 0,
+    });
+    setShowAddForm(false);
   };
 
   useEffect(() => {
@@ -302,9 +367,11 @@ const ChemicalsDetails = () => {
   };
 
   const handleInputChange = (e) => {
-    const text = e.target.value;
-    setSearchInput(text);
-    handleSearch(text);
+    const { name, value } = e.target;
+    setNewChemical({
+      ...newChemical,
+      [name]: value,
+    });
   };
 
   return (
@@ -373,6 +440,17 @@ const ChemicalsDetails = () => {
       >
         Add Chemical
       </button>
+      {showAddForm && (
+        <form className="add-chemical-form" onSubmit={handleFormSubmit}>
+          <input type="text" name="instituion_name" placeholder="Institution Name" value={newChemical.instituion_name} onChange={handleInputChange} />
+          <input type="text" name="city" placeholder="City" value={newChemical.city} onChange={handleInputChange} />
+          <input type="text" name="chemical_1" placeholder="Chemical 1" value={newChemical.chemical_1} onChange={handleInputChange} />
+          <input type="text" name="chemical_2" placeholder="Chemical 2" value={newChemical.chemical_2} onChange={handleInputChange} />
+          <input type="text" name="chemical_3" placeholder="Chemical 3" value={newChemical.chemical_3} onChange={handleInputChange} />
+          <input type="number" name="rating" placeholder="Rating" value={newChemical.rating} onChange={handleInputChange} />
+          <button type="submit">Submit</button>
+        </form>
+      )}
     </div>
   );
 };
